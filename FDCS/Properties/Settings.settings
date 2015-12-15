@@ -8,5 +8,23 @@
     <Setting Name="ITEMMapping" Type="System.String" Scope="User">
       <Value Profile="(Default)">Item Mapping.xlsx</Value>
     </Setting>
+    <Setting Name="SDMatrix" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SDMatrix.xlsx</Value>
+    </Setting>
+    <Setting Name="DESC_INS" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+    </Setting>
+    <Setting Name="DESC_WAR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+    </Setting>
+    <Setting Name="DESC_APPI" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+    </Setting>
+    <Setting Name="DESC_APPII" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+    </Setting>
+    <Setting Name="DESC_VCP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
