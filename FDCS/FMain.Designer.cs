@@ -33,12 +33,12 @@
             Infragistics.Win.UltraWinExplorerBar.UltraExplorerBarGroup ultraExplorerBarGroup1 = new Infragistics.Win.UltraWinExplorerBar.UltraExplorerBarGroup();
             Infragistics.Win.UltraWinExplorerBar.UltraExplorerBarItem ultraExplorerBarItem14 = new Infragistics.Win.UltraWinExplorerBar.UltraExplorerBarItem();
             Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
-            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel6 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
-            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel7 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
-            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel8 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
-            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel9 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
-            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel10 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
-            Infragistics.Win.Appearance appearance3 = new Infragistics.Win.Appearance();
+            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel1 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
+            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel2 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
+            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel3 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
+            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel4 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
+            Infragistics.Win.UltraWinStatusBar.UltraStatusPanel ultraStatusPanel5 = new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel();
+            Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbRelogin = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -82,9 +82,9 @@
             this.toolStripSeparator2,
             this.tsbConnect,
             this.toolStripSeparator6});
-            this.tsMain.Location = new System.Drawing.Point(0, 25);
+            this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(984, 25);
+            this.tsMain.Size = new System.Drawing.Size(984, 27);
             this.tsMain.TabIndex = 12;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -102,7 +102,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // tsbMenu
             // 
@@ -118,7 +118,7 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
             // 
             // tsbConnect
             // 
@@ -132,7 +132,7 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 27);
             // 
             // msMain
             // 
@@ -143,7 +143,7 @@
             this.帮助HToolStripMenuItem});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(984, 25);
+            this.msMain.Size = new System.Drawing.Size(984, 24);
             this.msMain.TabIndex = 11;
             this.msMain.Text = "menuStrip1";
             // 
@@ -153,19 +153,19 @@
             this.tsmRelogin,
             this.toolStripSeparator});
             this.文件FToolStripMenuItem.Name = "文件FToolStripMenuItem";
-            this.文件FToolStripMenuItem.Size = new System.Drawing.Size(76, 21);
+            this.文件FToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.文件FToolStripMenuItem.Text = "System(&S)";
             // 
             // tsmRelogin
             // 
             this.tsmRelogin.Name = "tsmRelogin";
-            this.tsmRelogin.Size = new System.Drawing.Size(111, 22);
+            this.tsmRelogin.Size = new System.Drawing.Size(106, 22);
             this.tsmRelogin.Text = "Exit(&E)";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(108, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(103, 6);
             // 
             // 工具TToolStripMenuItem
             // 
@@ -173,20 +173,21 @@
             this.tsmiShowCalculater,
             this.选项OToolStripMenuItem});
             this.工具TToolStripMenuItem.Name = "工具TToolStripMenuItem";
-            this.工具TToolStripMenuItem.Size = new System.Drawing.Size(61, 21);
+            this.工具TToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.工具TToolStripMenuItem.Text = "Tool(&T)";
             // 
             // tsmiShowCalculater
             // 
             this.tsmiShowCalculater.Name = "tsmiShowCalculater";
-            this.tsmiShowCalculater.Size = new System.Drawing.Size(150, 22);
+            this.tsmiShowCalculater.Size = new System.Drawing.Size(152, 22);
             this.tsmiShowCalculater.Text = "Calculator(&C)";
             // 
             // 选项OToolStripMenuItem
             // 
             this.选项OToolStripMenuItem.Name = "选项OToolStripMenuItem";
-            this.选项OToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.选项OToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.选项OToolStripMenuItem.Text = "Option(&O)";
+            this.选项OToolStripMenuItem.Click += new System.EventHandler(this.选项OToolStripMenuItem_Click);
             // 
             // 帮助HToolStripMenuItem
             // 
@@ -195,24 +196,24 @@
             this.toolStripSeparator5,
             this.关于AToolStripMenuItem});
             this.帮助HToolStripMenuItem.Name = "帮助HToolStripMenuItem";
-            this.帮助HToolStripMenuItem.Size = new System.Drawing.Size(64, 21);
+            this.帮助HToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.帮助HToolStripMenuItem.Text = "Help(&H)";
             // 
             // 内容CToolStripMenuItem
             // 
             this.内容CToolStripMenuItem.Name = "内容CToolStripMenuItem";
-            this.内容CToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.内容CToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.内容CToolStripMenuItem.Text = "内容(&C)";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(146, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(144, 6);
             // 
             // 关于AToolStripMenuItem
             // 
             this.关于AToolStripMenuItem.Name = "关于AToolStripMenuItem";
-            this.关于AToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.关于AToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.关于AToolStripMenuItem.Text = "关于我们(&A)...";
             // 
             // panelLeft
@@ -220,9 +221,9 @@
             this.panelLeft.BackColor = System.Drawing.Color.White;
             this.panelLeft.Controls.Add(this.uExplorerBar);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelLeft.Location = new System.Drawing.Point(0, 50);
+            this.panelLeft.Location = new System.Drawing.Point(0, 51);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(222, 489);
+            this.panelLeft.Size = new System.Drawing.Size(222, 533);
             this.panelLeft.TabIndex = 13;
             // 
             // uExplorerBar
@@ -243,56 +244,56 @@
             this.uExplorerBar.Location = new System.Drawing.Point(0, 0);
             this.uExplorerBar.Name = "uExplorerBar";
             this.uExplorerBar.ShowDefaultContextMenu = false;
-            this.uExplorerBar.Size = new System.Drawing.Size(222, 489);
+            this.uExplorerBar.Size = new System.Drawing.Size(222, 533);
             this.uExplorerBar.TabIndex = 2;
             this.uExplorerBar.ViewStyle = Infragistics.Win.UltraWinExplorerBar.UltraExplorerBarViewStyle.Office2007;
             this.uExplorerBar.ItemClick += new Infragistics.Win.UltraWinExplorerBar.ItemClickEventHandler(this.uExplorerBar_ItemClick);
             // 
             // uSplitterLeft
             // 
-            this.uSplitterLeft.Location = new System.Drawing.Point(222, 50);
+            this.uSplitterLeft.Location = new System.Drawing.Point(222, 51);
             this.uSplitterLeft.Name = "uSplitterLeft";
             this.uSplitterLeft.RestoreExtent = 191;
-            this.uSplitterLeft.Size = new System.Drawing.Size(10, 489);
+            this.uSplitterLeft.Size = new System.Drawing.Size(10, 533);
             this.uSplitterLeft.TabIndex = 14;
             // 
             // uStatusBar
             // 
-            this.uStatusBar.Location = new System.Drawing.Point(0, 539);
+            this.uStatusBar.Location = new System.Drawing.Point(0, 584);
             this.uStatusBar.Name = "uStatusBar";
-            ultraStatusPanel6.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
-            ultraStatusPanel6.DateTimeFormat = "yyyy-MM-dd hh:mm:ss";
-            ultraStatusPanel6.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Date;
-            ultraStatusPanel6.Width = 150;
-            ultraStatusPanel7.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
-            ultraStatusPanel7.Key = "tssl_Lname";
-            ultraStatusPanel7.Text = "GE Digital";
-            ultraStatusPanel7.Width = 150;
-            ultraStatusPanel8.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
-            ultraStatusPanel8.Key = "tssl_Lserver";
-            ultraStatusPanel8.Text = "China";
-            ultraStatusPanel8.Width = 300;
-            ultraStatusPanel9.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
-            ultraStatusPanel9.Key = "tssbtnShow";
-            ultraStatusPanel9.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Button;
-            ultraStatusPanel9.Text = "Version:1.0.0.0";
-            ultraStatusPanel9.Width = 120;
-            appearance3.TextHAlignAsString = "Right";
-            ultraStatusPanel10.Appearance = appearance3;
-            ultraStatusPanel10.Key = "cCompany";
-            ultraStatusPanel10.MarqueeInfo.Delay = 50;
-            ultraStatusPanel10.SizingMode = Infragistics.Win.UltraWinStatusBar.PanelSizingMode.Spring;
-            ultraStatusPanel10.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Marquee;
-            ultraStatusPanel10.Text = "GE | Imagination at Work ";
-            ultraStatusPanel10.Width = 300;
-            ultraStatusPanel10.WrapText = Infragistics.Win.DefaultableBoolean.False;
+            ultraStatusPanel1.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            ultraStatusPanel1.DateTimeFormat = "yyyy-MM-dd hh:mm:ss";
+            ultraStatusPanel1.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Date;
+            ultraStatusPanel1.Width = 150;
+            ultraStatusPanel2.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            ultraStatusPanel2.Key = "tssl_Lname";
+            ultraStatusPanel2.Text = "GE Digital";
+            ultraStatusPanel2.Width = 150;
+            ultraStatusPanel3.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            ultraStatusPanel3.Key = "tssl_Lserver";
+            ultraStatusPanel3.Text = "China";
+            ultraStatusPanel3.Width = 300;
+            ultraStatusPanel4.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            ultraStatusPanel4.Key = "tssbtnShow";
+            ultraStatusPanel4.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Button;
+            ultraStatusPanel4.Text = "Version:1.0.0.0";
+            ultraStatusPanel4.Width = 120;
+            appearance2.TextHAlignAsString = "Right";
+            ultraStatusPanel5.Appearance = appearance2;
+            ultraStatusPanel5.Key = "cCompany";
+            ultraStatusPanel5.MarqueeInfo.Delay = 50;
+            ultraStatusPanel5.SizingMode = Infragistics.Win.UltraWinStatusBar.PanelSizingMode.Spring;
+            ultraStatusPanel5.Style = Infragistics.Win.UltraWinStatusBar.PanelStyle.Marquee;
+            ultraStatusPanel5.Text = "GE | Imagination at Work ";
+            ultraStatusPanel5.Width = 300;
+            ultraStatusPanel5.WrapText = Infragistics.Win.DefaultableBoolean.False;
             this.uStatusBar.Panels.AddRange(new Infragistics.Win.UltraWinStatusBar.UltraStatusPanel[] {
-            ultraStatusPanel6,
-            ultraStatusPanel7,
-            ultraStatusPanel8,
-            ultraStatusPanel9,
-            ultraStatusPanel10});
-            this.uStatusBar.Size = new System.Drawing.Size(984, 23);
+            ultraStatusPanel1,
+            ultraStatusPanel2,
+            ultraStatusPanel3,
+            ultraStatusPanel4,
+            ultraStatusPanel5});
+            this.uStatusBar.Size = new System.Drawing.Size(984, 25);
             this.uStatusBar.TabIndex = 15;
             this.uStatusBar.ViewStyle = Infragistics.Win.UltraWinStatusBar.ViewStyle.Office2007;
             // 
@@ -306,9 +307,9 @@
             // 
             // FMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 562);
+            this.ClientSize = new System.Drawing.Size(984, 609);
             this.Controls.Add(this.uSplitterLeft);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.tsMain);

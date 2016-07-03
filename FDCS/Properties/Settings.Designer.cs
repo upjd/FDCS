@@ -73,7 +73,7 @@ namespace FDCS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300-InstallationSystemDisconnection")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300-WarrantySystemDisconnection")]
         public string DESC_WAR {
             get {
                 return ((string)(this["DESC_WAR"]));
@@ -85,7 +85,7 @@ namespace FDCS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300-InstallationSystemDisconnection")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300-AppSystemDisconnection")]
         public string DESC_APPI {
             get {
                 return ((string)(this["DESC_APPI"]));
@@ -97,7 +97,7 @@ namespace FDCS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300-InstallationSystemDisconnection")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300-AdvAppSystemDisconnection")]
         public string DESC_APPII {
             get {
                 return ((string)(this["DESC_APPII"]));
@@ -109,7 +109,7 @@ namespace FDCS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300-InstallationSystemDisconnection")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300-VCPSystemDisconnection")]
         public string DESC_VCP {
             get {
                 return ((string)(this["DESC_VCP"]));

@@ -15,16 +15,16 @@
       <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
     </Setting>
     <Setting Name="DESC_WAR" Type="System.String" Scope="User">
-      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+      <Value Profile="(Default)">300-WarrantySystemDisconnection</Value>
     </Setting>
     <Setting Name="DESC_APPI" Type="System.String" Scope="User">
-      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+      <Value Profile="(Default)">300-AppSystemDisconnection</Value>
     </Setting>
     <Setting Name="DESC_APPII" Type="System.String" Scope="User">
-      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+      <Value Profile="(Default)">300-AdvAppSystemDisconnection</Value>
     </Setting>
     <Setting Name="DESC_VCP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">300-InstallationSystemDisconnection</Value>
+      <Value Profile="(Default)">300-VCPSystemDisconnection</Value>
     </Setting>
   </Settings>
 </SettingsFile>

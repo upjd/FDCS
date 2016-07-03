@@ -109,5 +109,10 @@ namespace FDCS
         {
             uSplitterLeft.Collapsed = !uSplitterLeft.Collapsed;
         }
+
+        private void 选项OToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

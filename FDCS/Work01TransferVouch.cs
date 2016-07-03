@@ -106,7 +106,7 @@ namespace FDCS
                 sdRow.CrSubMod = cells[i, 9].StringValue;
                 sdRow.CrModCode = cells[i, 10].StringValue;
                 sdRow.CrAccount = cells[i, 11].StringValue;
-                sdRow.CrCC = cells[i,12].StringValue;
+                sdRow.CrCC = cells[i, 12].StringValue;
                 sdRow.CrFolder = cells[i, 13].StringValue;
 
                 dsMain.SDMatrix.Rows.Add(sdRow);
@@ -155,10 +155,14 @@ namespace FDCS
                 dsMain.ITEMMapping.Rows.Add(itemRow);
             }
         }
-
+        /// <summary>
+        /// 载入Input数据源
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbLoadSource_Click(object sender, EventArgs e)
         {
-            
+
             //导入数据
             if (ofdMain.ShowDialog() != DialogResult.OK)
                 return;
@@ -173,7 +177,7 @@ namespace FDCS
             for (var i = 1; i < cells.MaxDataRow + 1; i++)
             {
                 var inputRow = dsMain.DataInput.NewDataInputRow();
-                inputRow.RowNo=cells[i, 0].StringValue;
+                inputRow.RowNo = cells[i, 0].StringValue;
                 inputRow.OrderNumber = cells[i, 1].StringValue;
                 inputRow.LE = cells[i, 2].StringValue;
                 inputRow.PL = cells[i, 3].StringValue;
@@ -196,8 +200,8 @@ namespace FDCS
                 else
                 {
                     inputRow.INS = 0;
-                   
-                    inputRow.SetColumnError("INS", "SouceData: "+cins + "    cannot convert to decimal");
+
+                    inputRow.SetColumnError("INS", "SouceData: " + cins + "    cannot convert to decimal");
                 }
 
                 //判断WAR
@@ -221,7 +225,7 @@ namespace FDCS
                 else
                 {
                     inputRow.APPI = 0;
-                    inputRow.SetColumnError("APPI", "SouceData: "+cappi + "  cannot convert to decimal");
+                    inputRow.SetColumnError("APPI", "SouceData: " + cappi + "  cannot convert to decimal");
                 }
 
 
@@ -250,7 +254,7 @@ namespace FDCS
                     inputRow.SetColumnError("VCP", "SouceData: " + cvcp + "   cannot convert to decimal");
                 }
 
-                
+
                 dsMain.DataInput.Rows.Add(inputRow);
                 pbMain.Value = i;
             }
@@ -258,9 +262,9 @@ namespace FDCS
             //校验数据，并转换成2位小数的数值
             pbMain.Value = 0;
             tslblProgress.Text = @"Check Data Format";
-            for (var i = 0; i < dsMain.DataInput.Rows.Count ; i++)
+            for (var i = 0; i < dsMain.DataInput.Rows.Count; i++)
             {
-                decimal dins,dwar,dappi,dappii,dvcp;
+                decimal dins, dwar, dappi, dappii, dvcp;
                 var cins = dsMain.DataInput.Rows[i]["INS"].ToString();
                 var cwar = dsMain.DataInput.Rows[i]["WAR"].ToString();
                 var cappi = dsMain.DataInput.Rows[i]["APPI"].ToString();
@@ -311,104 +315,126 @@ namespace FDCS
             }
 
             tslblProgress.Text = @"Load Box Excel Data Source，Success";
-            if(dsMain.DataInput.HasErrors)
+            if (dsMain.DataInput.HasErrors)
             {
                 tslblProgress.Text = @"Input DataSouce Find Some Error, Cannot covert some data to Decimal Type";
             }
         }
 
+
+        /// <summary>
+        /// 点击了Transfer Data按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbtnTransferData_Click(object sender, EventArgs e)
         {
-            if(uneMor.Value==null||string.IsNullOrEmpty(uneMor.Value.ToString()))
+            //判断MOR是否有效
+            if (uneMor.Value == null || string.IsNullOrEmpty(uneMor.Value.ToString()))
             {
                 MessageBox.Show("Error:MOR is incorrect");
                 return;
             }
-            if(!decimal.TryParse(uneMor.Value.ToString(),out dMor))
+            if (!decimal.TryParse(uneMor.Value.ToString(), out dMor))
             {
                 MessageBox.Show("Error:MOR is incorrect");
                 return;
             }
-            if(dMor<=0)
+            if (dMor <= 0)
             {
                 MessageBox.Show("Error:MOR Must be 0+");
                 return;
             }
 
             dsMain.DataOutPut.Rows.Clear();
-            tcMain.SelectedTab=tcMain.TabPages[1];
-            var iInsCount = GenerateINS(); 
+            tcMain.SelectedTab = tcMain.TabPages[1];
+
+            //执行五个Item的生成
+            var iInsCount = GenerateINS();
             var iWarCount = GenerateWAR();
             var iAPPI = GenerateAPPI();
             var iAPPII = APPIIGenerateAPPII();
             var iVCP = GenerateVCP();
+
+
             if (uGridOutput.Rows.Count < 1)
                 return;
             uGridOutput.Rows[iInsCount].Appearance.BackColor = Color.LightGreen;
             uGridOutput.Rows[iInsCount].Activate();
             Application.DoEvents();
 
-            uGridOutput.Rows[iInsCount+iWarCount].Appearance.BackColor = Color.Orange;
+            uGridOutput.Rows[iInsCount + iWarCount].Appearance.BackColor = Color.Orange;
             uGridOutput.Rows[iInsCount + iWarCount].Activate();
             Application.DoEvents();
 
 
-            uGridOutput.Rows[iInsCount + iWarCount+iAPPI].Appearance.BackColor = Color.Pink;
-            uGridOutput.Rows[iInsCount + iWarCount+iAPPI].Activate();
+            uGridOutput.Rows[iInsCount + iWarCount + iAPPI].Appearance.BackColor = Color.Pink;
+            uGridOutput.Rows[iInsCount + iWarCount + iAPPI].Activate();
             Application.DoEvents();
 
-            uGridOutput.Rows[iInsCount + iWarCount+iAPPI+iAPPII].Appearance.BackColor = Color.LightBlue;
-            uGridOutput.Rows[iInsCount + iWarCount+iAPPI+iAPPII].Activate();
+            uGridOutput.Rows[iInsCount + iWarCount + iAPPI + iAPPII].Appearance.BackColor = Color.LightBlue;
+            uGridOutput.Rows[iInsCount + iWarCount + iAPPI + iAPPII].Activate();
             Application.DoEvents();
 
-
-            uGridOutput.Rows[iInsCount + iWarCount+iAPPI+iAPPII+iVCP].Appearance.BackColor = Color.LightYellow;
-            uGridOutput.Rows[iInsCount + iWarCount + iAPPI + iAPPII + iVCP].Activate();
+            if (uGridOutput.Rows.Count<=(iInsCount + iWarCount + iAPPI + iAPPII + iVCP))
+            {
+                uGridOutput.Rows[uGridOutput.Rows.Count-1].Appearance.BackColor = Color.LightYellow;
+                uGridOutput.Rows[uGridOutput.Rows.Count - 1].Activate();
+            }
+            else
+            {
+                uGridOutput.Rows[iInsCount + iWarCount + iAPPI + iAPPII + iVCP].Appearance.BackColor = Color.LightYellow;
+                uGridOutput.Rows[iInsCount + iWarCount + iAPPI + iAPPII + iVCP].Activate();
+            }
+            
             Application.DoEvents();
 
             tslblProgress.Text = "Transfer Complete";
 
         }
 
-
+        /// <summary>
+        /// 生成Installationo数据
+        /// </summary>
+        /// <returns></returns>
         private int GenerateINS()
         {
             //进行INS转换
-            var DrAccount = "561000013";
-            var DrMktSegment = "90";
-            var DrFolder = "0000000";
-            var DrBV = "1";
+            var DrAccount = "";
+            var DrMktSegment = "";
+            var DrFolder = "";
+            var DrBV = "";
             var results = from rs in dsMain.ITEMMapping
                           where rs.Item == "Installation"
                           select rs; ;
             foreach (var atemp in results)
             {
-                DrAccount = atemp.DrAccount;
+                //DrAccount = atemp.DrAccount;
                 DrMktSegment = atemp.DrMktSegment;
-                DrFolder = atemp.DrFolder;
+                //DrFolder = atemp.DrFolder;
                 DrBV = atemp.DrBV;
                 break;
             }
 
-            var CrAccount = "391030010";
-            var CrMktSegment = "00";
-            var CrFolder = "7681481";
-            var CrBV = "0";
+            var CrAccount = "";
+            var CrMktSegment = "";
+            var CrFolder = "";
+            var CrBV = "";
             var CrResults = from rs in dsMain.ITEMMapping
                             where rs.Item == "Installation"
                             select rs; ;
             foreach (var atemp in CrResults)
             {
-                CrAccount = atemp.CrAccount;
+                //CrAccount = atemp.CrAccount;
                 CrMktSegment = atemp.CrMktSegment;
-                CrFolder = atemp.CrGETDFolder;
+               //CrFolder = atemp.CrGETDFolder;
                 CrBV = atemp.CrBV;
                 break;
             }
 
             pbMain.Value = 0;
             pbMain.Maximum = uGridInput.Rows.Count;
-            var iCount=0;
+            var iCount = 0;
             for (var i = 0; i < uGridInput.Rows.Count; i++)
             {
                 //获取INS数据
@@ -420,19 +446,19 @@ namespace FDCS
                 if (dins == 0)
                     continue;
                 //先写借
-                WriteINSDr(i, dins,DrMktSegment,DrBV);
-                WriteINSCr(i, dins,CrMktSegment,CrBV);
+                WriteINSDr(i, dins, DrMktSegment, DrBV);
+                WriteINSCr(i, dins, CrMktSegment, CrBV);
                 pbMain.Value = i;
                 iCount = iCount + 2;
             }
             return iCount;
-            
+
         }
         /// <summary>
         /// INS输出写借方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteINSDr(int i, decimal iIns,string DrMktSegment,string DrBV)
+        private void WriteINSDr(int i, decimal iIns, string DrMktSegment, string DrBV)
         {
             var citem = "Installation";
             var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
@@ -441,10 +467,10 @@ namespace FDCS
             var DrAccount = "561000013";
             var DrCC = "";
             var DrFolder = "0000000";
-           
+
 
             var results = from rs in dsMain.SDMatrix
-                          where rs.Item == "Installation"&& rs.PL==PL &&rs.LE==LE&&rs.ModCode==Mod
+                          where rs.Item == "Installation" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
                           select rs; ;
 
             foreach (var atemp in results)
@@ -459,7 +485,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -468,33 +494,33 @@ namespace FDCS
             {
                 outputRow.CURRENCY_CODE = "USD";
             }
-            
+
             outputRow.DATE_CREATED = "";
             outputRow.CURRENCY_CONV_DATE = "";
             outputRow.CURRENCY_CONV_TYPE = "";
             outputRow.CURRENCY_CONV_RATE = "";
             //Company
-            outputRow.AFF_COMPANY =LE;
+            outputRow.AFF_COMPANY = LE;
             outputRow.AFF_ACCOUNT = DrAccount;
             //成本中心
             outputRow.AFF_CENTER = DrCC;
-            
+
 
             outputRow.AFF_BASE_VAR = DrBV;
-            outputRow.AFF_MODALITY = 
+            outputRow.AFF_MODALITY = Mod;
             outputRow.AFF_MKT_SEGMENT = DrMktSegment;
-            outputRow.AFF_FOLDER = DrFolder;
+            //outputRow.AFF_FOLDER = DrFolder;
 
             //判断AFF_FOLDER
             outputRow.AFF_FOLDER = DrFolder;
             //判断Source
-            if(LE.Length>2)
+            if (LE.Length > 2)
             {
-                if(LE.Substring(0,2).Equals("76"))
+                if (LE.Substring(0, 2).Equals("76"))
                 {
                     outputRow.AFF_SOURCE = "7601";
                 }
-                else if(LE.Substring(0,2).Equals("70"))
+                else if (LE.Substring(0, 2).Equals("70"))
                 {
                     outputRow.AFF_SOURCE = "7001";
                 }
@@ -512,7 +538,7 @@ namespace FDCS
                 }
             }
 
-            decimal dMoney=0;
+            decimal dMoney = 0;
             if (LE.Equals("760110"))
             {
                 dMoney = Math.Round(iIns * dMor, 2);
@@ -608,7 +634,7 @@ namespace FDCS
         /// 输出写贷方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteINSCr(int i,decimal iIns, string CrMktSegment,string CrBV)
+        private void WriteINSCr(int i, decimal iIns, string CrMktSegment, string CrBV)
         {
 
             var citem = "Installation";
@@ -630,7 +656,7 @@ namespace FDCS
                 CrCC = atemp.CrCC;
                 CrFolder = atemp.CrFolder;
                 CrModCode = atemp.CrModCode;
-                CrPL = atemp.CrPL; 
+                CrPL = atemp.CrPL;
                 break;
             }
 
@@ -639,7 +665,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -784,38 +810,41 @@ namespace FDCS
         }
 
 
-
+        /// <summary>
+        /// 生成Warranty数据
+        /// </summary>
+        /// <returns></returns>
         private int GenerateWAR()
         {
             //进行INS转换
-            var DrAccount = "562000013";
-            var DrMktSegment = "90";
-            var DrFolder = "0000000";
-            var DrBV = "1";
+            var DrAccount = "";
+            var DrMktSegment = "";
+            var DrFolder = "";
+            var DrBV = "";
             var results = from rs in dsMain.ITEMMapping
                           where rs.Item == "Warranty"
                           select rs; ;
             foreach (var atemp in results)
             {
-                DrAccount = atemp.DrAccount;
+                //DrAccount = atemp.DrAccount;
                 DrMktSegment = atemp.DrMktSegment;
-                DrFolder = atemp.DrFolder;
+                //DrFolder = atemp.DrFolder;
                 DrBV = atemp.DrBV;
                 break;
             }
 
-            var CrAccount = "421001020";
-            var CrMktSegment = "00";
-            var CrFolder = "7082151";
-            var CrBV = "0";
+            var CrAccount = "";
+            var CrMktSegment = "";
+            var CrFolder = "";
+            var CrBV = "";
             var CrResults = from rs in dsMain.ITEMMapping
                             where rs.Item == "Warranty"
                             select rs; ;
             foreach (var atemp in CrResults)
             {
-                CrAccount = atemp.CrAccount;
+                //CrAccount = atemp.CrAccount;
                 CrMktSegment = atemp.CrMktSegment;
-                CrFolder = atemp.CrGETDFolder;
+                //CrFolder = atemp.CrGETDFolder;
                 CrBV = atemp.CrBV;
                 break;
             }
@@ -846,15 +875,15 @@ namespace FDCS
         /// WAR输出写借方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteWARDr(int i, decimal iIns, string DrMktSegment,  string DrBV)
+        private void WriteWARDr(int i, decimal iIns, string DrMktSegment, string DrBV)
         {
             var citem = "Warranty";
             var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
             var PL = uGridInput.Rows[i].Cells["PL"].Value.ToString();
             var Mod = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
-            var DrAccount = "561000013";
+            var DrAccount = "";
             var DrCC = "";
-            var DrFolder = "0000000";
+            var DrFolder = "";
             var results = from rs in dsMain.SDMatrix
                           where rs.Item == "Warranty" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
                           select rs; ;
@@ -871,7 +900,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -890,7 +919,7 @@ namespace FDCS
             outputRow.AFF_ACCOUNT = DrAccount;
             //成本中心
             outputRow.AFF_CENTER = DrCC;
-            
+
 
             outputRow.AFF_BASE_VAR = DrBV;
             outputRow.AFF_MODALITY = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
@@ -1018,7 +1047,7 @@ namespace FDCS
         /// WAR输出写贷方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteWARCr(int i, decimal iIns,  string CrMktSegment, string CrBV)
+        private void WriteWARCr(int i, decimal iIns, string CrMktSegment, string CrBV)
         {
             var citem = "Warranty";
             var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
@@ -1047,7 +1076,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -1066,7 +1095,7 @@ namespace FDCS
             outputRow.AFF_ACCOUNT = CrAccount;
             //成本中心
             outputRow.AFF_CENTER = CrCC;
-            
+
 
             outputRow.AFF_BASE_VAR = CrBV;
             outputRow.AFF_MODALITY = CrModCode;
@@ -1205,38 +1234,41 @@ namespace FDCS
 
 
 
-
+        /// <summary>
+        /// 生成APPI数据
+        /// </summary>
+        /// <returns></returns>
         private int GenerateAPPI()
         {
             //进行INS转换
-            var DrAccount = "560000080";
-            var DrMktSegment = "90";
-            var DrFolder = "0030010";
-            var DrBV = "1";
+            var DrAccount = "";
+            var DrMktSegment = "";
+            var DrFolder = "";
+            var DrBV = "";
             var results = from rs in dsMain.ITEMMapping
                           where rs.Item == "Application"
                           select rs; ;
             foreach (var atemp in results)
             {
-                DrAccount = atemp.DrAccount;
+                //DrAccount = atemp.DrAccount;
                 DrMktSegment = atemp.DrMktSegment;
-                DrFolder = atemp.DrFolder;
+                //DrFolder = atemp.DrFolder;
                 DrBV = atemp.DrBV;
                 break;
             }
 
-            var CrAccount = "391030030";
-            var CrMktSegment = "00";
-            var CrFolder = "0030010";
-            var CrBV = "0";
+            var CrAccount = "";
+            var CrMktSegment = "";
+            var CrFolder = "";
+            var CrBV = "";
             var CrResults = from rs in dsMain.ITEMMapping
                             where rs.Item == "Application"
                             select rs; ;
             foreach (var atemp in CrResults)
             {
-                CrAccount = atemp.CrAccount;
+                //CrAccount = atemp.CrAccount;
                 CrMktSegment = atemp.CrMktSegment;
-                CrFolder = atemp.CrGETDFolder;
+                //CrFolder = atemp.CrGETDFolder;
                 CrBV = atemp.CrBV;
                 break;
             }
@@ -1262,9 +1294,9 @@ namespace FDCS
                     WriteAPPICr(i, dwar, CrAccount, CrMktSegment, CrFolder, CrBV);
                     iCount = iCount + 2;
                 }
-                
+
                 pbMain.Value = i;
-                
+
             }
             for (var i = 0; i < uGridInput.Rows.Count; i++)
             {
@@ -1284,23 +1316,23 @@ namespace FDCS
                     iCount = iCount + 1;
                 }
                 pbMain.Value = i;
-                
+
             }
             //计算751的合计
-            APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV,"751");
-            //计算731的合计
-            iCount =iCount+ APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "731");
-            //计算781的合计
-            iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "781");
-            //计算721的合计
-            iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "721");
-            //计算907的合计
-            iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "907");
-            //计算841的合计
-            iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "841");
+            APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV);
+            ////计算731的合计
+            //iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "731");
+            ////计算781的合计
+            //iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "781");
+            ////计算721的合计
+            //iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "721");
+            ////计算907的合计
+            //iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "907");
+            ////计算841的合计
+            //iCount = iCount + APPIGroupBy(CrAccount, CrMktSegment, CrFolder, CrBV, "841");
 
-            
-            
+
+
             return iCount;
 
         }
@@ -1311,40 +1343,40 @@ namespace FDCS
         /// <param name="CrMktSegment"></param>
         /// <param name="CrFolder"></param>
         /// <param name="CrBV"></param>
-        private int APPIGroupBy(string CrAccount, string CrMktSegment, string CrFolder, string CrBV,string ModCode)
+        private int APPIGroupBy(string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
         {
+            string[] strModCode = new string[6] { "751", "731", "781", "721", "907", "841" };
             var resultAPPI = from u in dsMain.DataInput
-                             where u.MOD_Code == ModCode
-                             group u by new { LE = u.LE, MOD_Code = u.MOD_Code } into g
+                             where strModCode.Contains(u.MOD_Code)
+                             group u by new { LE = u.LE} into g
                              select new
                              {
                                  g.Key.LE,
-                                 g.Key.MOD_Code,
                                  APPI = g.Sum(c => c.APPI)
                              };
-            var iCount=0;
+            var iCount = 0;
             foreach (var itemAPPI in resultAPPI)
             {
                 if (itemAPPI.APPI != 0)
                 {
-                    WriteAPPICrGoupBy(itemAPPI.LE, itemAPPI.MOD_Code, itemAPPI.APPI, CrAccount, CrMktSegment, CrFolder, CrBV);
+                    WriteAPPICrGoupBy(itemAPPI.LE,"990", itemAPPI.APPI, CrAccount, CrMktSegment, CrFolder, CrBV);
                     iCount = iCount + 1;
                 }
             }
             return iCount;
         }
         /// <summary>
-        /// WAR输出写借方
+        /// APPI输出写借方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteAPPIDr(int i, decimal iIns,string DrAccount, string DrMktSegment,string DrFolder, string DrBV)
+        private void WriteAPPIDr(int i, decimal iIns, string DrAccount, string DrMktSegment, string DrFolder, string DrBV)
         {
 
             var citem = "Application";
             var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
             var PL = uGridInput.Rows[i].Cells["PL"].Value.ToString();
             var Mod = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
-            
+
             var DrCC = "";
             var results = from rs in dsMain.SDMatrix
                           where rs.Item == "Application" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
@@ -1362,7 +1394,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -1380,8 +1412,8 @@ namespace FDCS
             outputRow.AFF_COMPANY = LE;
             outputRow.AFF_ACCOUNT = DrAccount;
             //成本中心
-            outputRow.AFF_CENTER=DrCC;
-            
+            outputRow.AFF_CENTER = DrCC;
+
             outputRow.AFF_BASE_VAR = DrBV;
             outputRow.AFF_MODALITY = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
             outputRow.AFF_MKT_SEGMENT = DrMktSegment;
@@ -1516,7 +1548,7 @@ namespace FDCS
         }
 
         /// <summary>
-        /// WAR输出写贷方
+        /// APPI输出写贷方
         /// </summary>
         /// <param name="i"></param>
         private void WriteAPPICr(int i, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
@@ -1526,9 +1558,9 @@ namespace FDCS
             var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
             var PL = uGridInput.Rows[i].Cells["PL"].Value.ToString();
             var Mod = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
-            CrAccount = "561000013";
+            CrAccount = "";
             var CrCC = "";
-            CrFolder = "0000000";
+            CrFolder = "";
             var CrModCode = "";
             var results = from rs in dsMain.SDMatrix
                           where rs.Item == "Application" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
@@ -1546,7 +1578,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -1564,8 +1596,8 @@ namespace FDCS
             outputRow.AFF_COMPANY = LE;
             outputRow.AFF_ACCOUNT = CrAccount;
             //成本中心
-            outputRow.AFF_CENTER=CrCC;
-            
+            outputRow.AFF_CENTER = CrCC;
+
 
             outputRow.AFF_BASE_VAR = CrBV;
             outputRow.AFF_MODALITY = CrModCode;
@@ -1700,19 +1732,28 @@ namespace FDCS
             outputRow.LOCAL_MAPPING_FIELD19 = "";
             dsMain.DataOutPut.Rows.Add(outputRow);
         }
-
-        private void WriteAPPICrGoupBy(string LE,string ModCode,  decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
+        /// <summary>
+        /// 执行APPI的Groupy结果
+        /// </summary>
+        /// <param name="LE"></param>
+        /// <param name="ModCode"></param>
+        /// <param name="iIns"></param>
+        /// <param name="CrAccount"></param>
+        /// <param name="CrMktSegment"></param>
+        /// <param name="CrFolder"></param>
+        /// <param name="CrBV"></param>
+        private void WriteAPPICrGoupBy(string LE, string ModCode, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
         {
 
             var citem = "Application";
             var PL = "L23";
-            
+
             var CrCC = "";
 
             var CrModCode = "";
             var results = from rs in dsMain.SDMatrix
                           where rs.Item == "Application" && rs.PL == PL && rs.LE == LE && rs.ModCode == ModCode
-                          select rs; 
+                          select rs;
 
             foreach (var atemp in results)
             {
@@ -1720,7 +1761,7 @@ namespace FDCS
                 CrCC = atemp.CrCC;
                 CrFolder = atemp.CrFolder;
                 CrModCode = atemp.CrModCode;
-                
+
                 break;
             }
             var outputRow = dsMain.DataOutPut.NewDataOutPutRow();
@@ -1745,11 +1786,31 @@ namespace FDCS
             outputRow.AFF_ACCOUNT = CrAccount;
             //成本中心
             outputRow.AFF_CENTER = CrCC;
-               
 
-            outputRow.AFF_BASE_VAR = CrBV;
+            if (CrAccount.Equals("560000080"))
+            {
+                outputRow.AFF_BASE_VAR = "1";
+            }
+            else
+            {
+                outputRow.AFF_BASE_VAR = CrBV;
+            }
+            
+
+
             outputRow.AFF_MODALITY = CrModCode;
-            outputRow.AFF_MKT_SEGMENT = CrMktSegment;
+
+            if (CrAccount.Equals("560000080"))
+            {
+
+                outputRow.AFF_MKT_SEGMENT = "90";
+            }
+            else
+            {
+                outputRow.AFF_MKT_SEGMENT = CrMktSegment;
+            }
+
+
             outputRow.AFF_FOLDER = CrFolder;
 
             //判断AFF_FOLDER
@@ -1882,38 +1943,41 @@ namespace FDCS
         }
 
 
-
+        /// <summary>
+        /// 生成APPII数据
+        /// </summary>
+        /// <returns></returns>
         private int APPIIGenerateAPPII()
         {
             //进行INS转换
-            var DrAccount = "560000080";
-            var DrMktSegment = "90";
-            var DrFolder = "0030100";
+            var DrAccount = "";
+            var DrMktSegment = "";
+            var DrFolder = "";
             var DrBV = "1";
             var results = from rs in dsMain.ITEMMapping
                           where rs.Item == "Adv App"
                           select rs; ;
             foreach (var atemp in results)
             {
-                DrAccount = atemp.DrAccount;
+                //DrAccount = atemp.DrAccount;
                 DrMktSegment = atemp.DrMktSegment;
-                DrFolder = atemp.DrFolder;
+                //DrFolder = atemp.DrFolder;
                 DrBV = atemp.DrBV;
                 break;
             }
 
-            var CrAccount = "391030030";
-            var CrMktSegment = "00";
-            var CrFolder = "0030100";
-            var CrBV = "0";
+            var CrAccount = "";
+            var CrMktSegment = "";
+            var CrFolder = "";
+            var CrBV = "";
             var CrResults = from rs in dsMain.ITEMMapping
                             where rs.Item == "Adv App"
                             select rs; ;
             foreach (var atemp in CrResults)
             {
-                CrAccount = atemp.CrAccount;
+                //CrAccount = atemp.CrAccount;
                 CrMktSegment = atemp.CrMktSegment;
-                CrFolder = atemp.CrGETDFolder;
+                //CrFolder = atemp.CrGETDFolder;
                 CrBV = atemp.CrBV;
                 break;
             }
@@ -1941,7 +2005,7 @@ namespace FDCS
                 }
 
                 pbMain.Value = i;
-                
+
             }
             for (var i = 0; i < uGridInput.Rows.Count; i++)
             {
@@ -1961,7 +2025,7 @@ namespace FDCS
                     iCount = iCount + 1;
                 }
                 pbMain.Value = i;
-                
+
             }
             //计算751的合计
             iCount = iCount + APPIIGroupByAPPII(CrAccount, CrMktSegment, CrFolder, CrBV, "751");
@@ -1981,7 +2045,7 @@ namespace FDCS
 
         }
         /// <summary>
-        /// 计算APPI的Groupby 结果
+        /// 计算APPII的Groupby 结果
         /// </summary>
         /// <param name="CrAccount"></param>
         /// <param name="CrMktSegment"></param>
@@ -2010,7 +2074,7 @@ namespace FDCS
             return iCount;
         }
         /// <summary>
-        /// WAR输出写借方
+        /// APPII输出写借方
         /// </summary>
         /// <param name="i"></param>
         private void WriteAPPIIDrAPPII(int i, decimal iIns, string DrAccount, string DrMktSegment, string DrFolder, string DrBV)
@@ -2038,7 +2102,7 @@ namespace FDCS
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
             var cCurrency = "";
-            
+
             if (LE.Equals("760110"))
             {
                 outputRow.CURRENCY_CODE = "CNY";
@@ -2056,9 +2120,9 @@ namespace FDCS
             outputRow.AFF_COMPANY = LE;
             outputRow.AFF_ACCOUNT = DrAccount;
             //成本中心
-           
-            outputRow.AFF_CENTER =DrCC;
-            
+
+            outputRow.AFF_CENTER = DrCC;
+
 
             outputRow.AFF_BASE_VAR = DrBV;
             outputRow.AFF_MODALITY = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
@@ -2193,7 +2257,7 @@ namespace FDCS
         }
 
         /// <summary>
-        /// WAR输出写贷方
+        /// APPII输出写贷方
         /// </summary>
         /// <param name="i"></param>
         private void WriteAPPIICrAPPII(int i, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
@@ -2375,10 +2439,20 @@ namespace FDCS
             dsMain.DataOutPut.Rows.Add(outputRow);
         }
 
+        /// <summary>
+        /// 写APPII的Groupy后的贷方数据
+        /// </summary>
+        /// <param name="LE"></param>
+        /// <param name="ModCode"></param>
+        /// <param name="iIns"></param>
+        /// <param name="CrAccount"></param>
+        /// <param name="CrMktSegment"></param>
+        /// <param name="CrFolder"></param>
+        /// <param name="CrBV"></param>
         private void WriteAPPIICrGoupByAPPII(string LE, string ModCode, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
         {
             var citem = "Adv App";
-           
+
             var PL = "L23";
             var CrCC = "";
             var CrModCode = "";
@@ -2551,29 +2625,32 @@ namespace FDCS
 
 
 
-
+        /// <summary>
+        /// 生成VCP数据
+        /// </summary>
+        /// <returns></returns>
         private int GenerateVCP()
         {
             //进行INS转换
-            var DrAccount = "627000010";
-            var DrMktSegment = "90";
-            var DrFolder = "0000000";
-            var DrBV = "1";
+            var DrAccount = "";
+            var DrMktSegment = "";
+            var DrFolder = "";
+            var DrBV = "";
             var results = from rs in dsMain.ITEMMapping
                           where rs.Item == "VCP"
                           select rs; ;
             foreach (var atemp in results)
             {
-                DrAccount = atemp.DrAccount;
+                //DrAccount = atemp.DrAccount;
                 DrMktSegment = atemp.DrMktSegment;
-                DrFolder = atemp.DrFolder;
+               // DrFolder = atemp.DrFolder;
                 DrBV = atemp.DrBV;
                 break;
             }
 
-            var CrAccount = "627000010";
+            var CrAccount = "";
             var CrMktSegment = "";
-            var CrFolder = "0000000";
+            var CrFolder = "";
             var CrBV = "";
             var CrResults = from rs in dsMain.ITEMMapping
                             where rs.Item == "VCP"
@@ -2603,15 +2680,15 @@ namespace FDCS
                     continue;
                 //先写借
                 WriteVCPDr(i, dwar, DrAccount, DrMktSegment, DrFolder, DrBV);
-                   
+
 
                 pbMain.Value = i;
                 iCount = iCount + 1;
             }
-            
+
             //计算LE分类的合计
             iCount = iCount + VCPGroupByVCP(CrAccount, CrMktSegment, CrFolder, CrBV);
-            
+
 
             return iCount;
 
@@ -2626,7 +2703,7 @@ namespace FDCS
         private int VCPGroupByVCP(string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
         {
             var resultAPPI = from u in dsMain.DataInput
-                             group u by new { LE = u.LE} into g
+                             group u by new { LE = u.LE } into g
                              select new
                              {
                                  g.Key.LE,
@@ -2638,12 +2715,12 @@ namespace FDCS
                 if (itemAPPI.VCP == 0)
                     return 0;
                 WriteVCPCrGoupBy(itemAPPI.LE, "990", itemAPPI.VCP, CrAccount, CrMktSegment, CrFolder, CrBV);
-                iCount=iCount+ 1;
+                iCount = iCount + 1;
             }
             return iCount;
         }
         /// <summary>
-        /// WAR输出写借方
+        /// VCP输出写借方
         /// </summary>
         /// <param name="i"></param>
         private void WriteVCPDr(int i, decimal iIns, string DrAccount, string DrMktSegment, string DrFolder, string DrBV)
@@ -2718,17 +2795,18 @@ namespace FDCS
                 }
             }
             //判断AFF_DESTINATION
-            if (LE.Length > 2)
-            {
-                if (LE.Substring(0, 2).Equals("76"))
-                {
-                    outputRow.AFF_DESTINATION = "76";
-                }
-                else if (LE.Substring(0, 2).Equals("70"))
-                {
-                    outputRow.AFF_DESTINATION = "70";
-                }
-            }
+            outputRow.AFF_DESTINATION = "00";
+            //if (LE.Length > 2)
+            //{
+            //    if (LE.Substring(0, 2).Equals("76"))
+            //    {
+            //        outputRow.AFF_DESTINATION = "76";
+            //    }
+            //    else if (LE.Substring(0, 2).Equals("70"))
+            //    {
+            //        outputRow.AFF_DESTINATION = "70";
+            //    }
+            //}
             decimal dMoney = 0;
             if (LE.Equals("760110"))
             {
@@ -2821,207 +2899,216 @@ namespace FDCS
         }
 
         /// <summary>
-        /// WAR输出写贷方
+        /// VCP输出写贷方
         /// </summary>
         /// <param name="i"></param>
-        private void WriteVCPCr(int i, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
-        {
-            var citem = "VCP";
-            var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
-            var PL = uGridInput.Rows[i].Cells["PL"].Value.ToString();
-            var Mod = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
-            var CrCC = "";
-            var CrModCode = "";
-            var results = from rs in dsMain.SDMatrix
-                          where rs.Item == "VCP" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
-                          select rs; ;
+        //private void WriteVCPCr(int i, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
+        //{
+        //    var citem = "VCP";
+        //    var LE = uGridInput.Rows[i].Cells["LE"].Value.ToString();
+        //    var PL = uGridInput.Rows[i].Cells["PL"].Value.ToString();
+        //    var Mod = uGridInput.Rows[i].Cells["MOD_Code"].Value.ToString();
+        //    var CrCC = "";
+        //    var CrModCode = "";
+        //    var results = from rs in dsMain.SDMatrix
+        //                  where rs.Item == "VCP" && rs.PL == PL && rs.LE == LE && rs.ModCode == Mod
+        //                  select rs; ;
 
-            foreach (var atemp in results)
-            {
-                CrAccount = atemp.CrAccount;
-                CrCC = atemp.CrCC;
-                CrFolder = atemp.CrFolder;
-                CrModCode = atemp.CrModCode;
-                break;
-            }
+        //    foreach (var atemp in results)
+        //    {
+        //        CrAccount = atemp.CrAccount;
+        //        CrCC = atemp.CrCC;
+        //        CrFolder = atemp.CrFolder;
+        //        CrModCode = atemp.CrModCode;
+        //        break;
+        //    }
 
-            var outputRow = dsMain.DataOutPut.NewDataOutPutRow();
-            outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
-            //判断币种
-            var cCurrency = "";
-           
-            if (LE.Equals("760110"))
-            {
-                outputRow.CURRENCY_CODE = "CNY";
-            }
-            else if (LE.Equals("700110"))
-            {
-                outputRow.CURRENCY_CODE = "USD";
-            }
+        //    var outputRow = dsMain.DataOutPut.NewDataOutPutRow();
+        //    outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
+        //    //判断币种
+        //    var cCurrency = "";
 
-            outputRow.DATE_CREATED = "";
-            outputRow.CURRENCY_CONV_DATE = "";
-            outputRow.CURRENCY_CONV_TYPE = "";
-            outputRow.CURRENCY_CONV_RATE = "";
-            //Company
-            outputRow.AFF_COMPANY = LE;
-            outputRow.AFF_ACCOUNT = CrAccount;
-            //成本中心
-            
-            outputRow.AFF_CENTER = CrCC;
+        //    if (LE.Equals("760110"))
+        //    {
+        //        outputRow.CURRENCY_CODE = "CNY";
+        //    }
+        //    else if (LE.Equals("700110"))
+        //    {
+        //        outputRow.CURRENCY_CODE = "USD";
+        //    }
 
-            outputRow.AFF_BASE_VAR = CrBV;
-            outputRow.AFF_MODALITY = CrModCode;
-            outputRow.AFF_MKT_SEGMENT = CrMktSegment;
-            outputRow.AFF_FOLDER = CrFolder;
+        //    outputRow.DATE_CREATED = "";
+        //    outputRow.CURRENCY_CONV_DATE = "";
+        //    outputRow.CURRENCY_CONV_TYPE = "";
+        //    outputRow.CURRENCY_CONV_RATE = "";
+        //    //Company
+        //    outputRow.AFF_COMPANY = LE;
+        //    outputRow.AFF_ACCOUNT = CrAccount;
+        //    //成本中心
 
-            //判断AFF_FOLDER
-            //if (LE.Length > 2)
-            //{
-            //    if (LE.Substring(0, 2).Equals("76"))
-            //    {
-            //        outputRow.AFF_FOLDER = "7081481";
-            //    }
-            //    else if (LE.Substring(0, 2).Equals("70"))
-            //    {
-            //        outputRow.AFF_FOLDER = "7081481";
-            //    }
-            //}
-            //判断Source
-            if (LE.Length > 2)
-            {
-                if (LE.Substring(0, 2).Equals("76"))
-                {
-                    outputRow.AFF_SOURCE = "7601";
-                }
-                else if (LE.Substring(0, 2).Equals("70"))
-                {
-                    outputRow.AFF_SOURCE = "7001";
-                }
-            }
-            //判断AFF_DESTINATION
-            if (LE.Length > 2)
-            {
-                if (LE.Substring(0, 2).Equals("76"))
-                {
-                    outputRow.AFF_DESTINATION = "76";
-                }
-                else if (LE.Substring(0, 2).Equals("70"))
-                {
-                    outputRow.AFF_DESTINATION = "70";
-                }
-            }
-            decimal dMoney = 0;
-            if (LE.Equals("760110"))
-            {
-                dMoney = Math.Round(iIns * dMor, 2);
-            }
-            else if (LE.Equals("700110"))
-            {
-                dMoney = iIns;
-            }
-            outputRow.ENTERED_DR = "";
-            outputRow.ENTERED_CR = dMoney.ToString();
-            outputRow.ACCOUNTED_DR = "";
-            outputRow.ACCOUNTED_CR = "";
-            //判断SET_OF_BOOKS_ID
-            if (LE.Length > 2)
-            {
-                if (LE.Substring(0, 2).Equals("76"))
-                {
-                    outputRow.SET_OF_BOOKS_ID = "050";
-                }
-                else if (LE.Substring(0, 2).Equals("70"))
-                {
-                    outputRow.SET_OF_BOOKS_ID = "051";
-                }
-            }
-            outputRow.ACTUAL_FLAG = "A";
-            outputRow.AFF_JOURNAL_CATEGORY = "Adjustment";
-            outputRow.AFF_JOURNAL_SOURCE = "Spreadsheet";
-            outputRow.PERIOD = "";
-            outputRow.CODE_COMBINATION_ID = "";
-            outputRow.COMPANY_CODE_MAP = "";
-            outputRow.JOURNAL_SOURCE_MAP = "";
-            outputRow.JOURNAL_CATEGORY_MAP = "";
-            outputRow.JOURNAL_BATCH = txtJOURNAL_BATCH.Text;
-            outputRow.BATCH_DESCRIPTION = txtBATCH_DESCRIPTION.Text;
-            outputRow.JOURNAL_NAME = txtJOURNAL_BATCH.Text;
-            outputRow.JOURNAL_DESCRIPTION = txtBATCH_DESCRIPTION.Text;
-            outputRow.JOURNAL_REFERENCE = "";
-            outputRow.JOURNALLINEDESC = txtDESC_VCP.Text;
-            outputRow.LEGACY_ACCOUNT = "";
-            outputRow.LEGACY_JRNL_NUM = "";
-            outputRow.LEGACY_OFFSET_ACCT = "";
-            outputRow.BILL_TO_CUSTOMER = "";
-            outputRow.SHIP_TO_CUSTOMER = "";
-            outputRow.EMPLOYEE_NUM = "";
-            outputRow.INVENTORY_ORG = "";
-            outputRow.MA_CODE = "";
-            outputRow.MATERIAL_CLASS = "";
-            outputRow.PO_ITEM = "";
-            outputRow.ORDER_NUM = uGridInput.Rows[i].Cells["OrderNumber"].Value.ToString();
-            outputRow.INV_ITEM_NUM = "";
-            outputRow.QUANTITY = "";
-            outputRow.UNIT_OF_MEASURE = "";
-            outputRow.DOCUMENT_NUM = "";
-            outputRow.DOCUMENT_DATE = "";
-            outputRow.PROJECT_NUM = "";
-            outputRow.DOCUMENT_NUM2 = "";
-            outputRow.SHIPPED_DATE = "";
-            outputRow.VAT_CODE = "";
-            outputRow.ACTUAL_HOURS = "";
-            outputRow.CONSIGNMT_CONTRACT = "";
-            outputRow.COST_KEY = "";
-            outputRow.PO_NUM = "";
-            outputRow.PSI_CODE = "";
-            outputRow.RETURN_MAT_CODE = "";
-            outputRow.TRANSACTION_CODE = "";
-            outputRow.VENDOR_NUM = "";
-            outputRow.SERVICE_ACCTG_KEY = "";
-            outputRow.REFERENCE_AMOUNT = "";
-            outputRow.LOCAL_MAPPING_FIELD1 = "";
-            outputRow.LOCAL_MAPPING_FIELD2 = "";
-            outputRow.LOCAL_MAPPING_FIELD3 = "";
-            outputRow.LOCAL_MAPPING_FIELD4 = "";
-            outputRow.LOCAL_MAPPING_FIELD5 = "";
-            outputRow.LOCAL_MAPPING_FIELD6 = "";
-            outputRow.LOCAL_MAPPING_FIELD7 = "";
-            outputRow.LOCAL_MAPPING_FIELD8 = "";
-            outputRow.LOCAL_MAPPING_FIELD9 = "";
-            outputRow.LOCAL_MAPPING_FIELD10 = "";
-            outputRow.LOCAL_MAPPING_FIELD11 = "";
-            outputRow.LOCAL_MAPPING_FIELD12 = "";
-            outputRow.LOCAL_MAPPING_FIELD13 = "";
-            outputRow.LOCAL_MAPPING_FIELD14 = "";
-            outputRow.LOCAL_MAPPING_FIELD15 = "";
-            outputRow.LOCAL_MAPPING_FIELD16 = "";
-            outputRow.LOCAL_MAPPING_FIELD17 = "";
-            outputRow.LOCAL_MAPPING_FIELD18 = "";
-            outputRow.LOCAL_MAPPING_FIELD19 = "";
-            dsMain.DataOutPut.Rows.Add(outputRow);
-        }
+        //    outputRow.AFF_CENTER = CrCC;
 
+        //    outputRow.AFF_BASE_VAR = CrBV;
+        //    outputRow.AFF_MODALITY = CrModCode;
+        //    outputRow.AFF_MKT_SEGMENT = CrMktSegment;
+        //    outputRow.AFF_FOLDER = CrFolder;
+
+        //    //判断AFF_FOLDER
+        //    //if (LE.Length > 2)
+        //    //{
+        //    //    if (LE.Substring(0, 2).Equals("76"))
+        //    //    {
+        //    //        outputRow.AFF_FOLDER = "7081481";
+        //    //    }
+        //    //    else if (LE.Substring(0, 2).Equals("70"))
+        //    //    {
+        //    //        outputRow.AFF_FOLDER = "7081481";
+        //    //    }
+        //    //}
+        //    //判断Source
+        //    if (LE.Length > 2)
+        //    {
+        //        if (LE.Substring(0, 2).Equals("76"))
+        //        {
+        //            outputRow.AFF_SOURCE = "7601";
+        //        }
+        //        else if (LE.Substring(0, 2).Equals("70"))
+        //        {
+        //            outputRow.AFF_SOURCE = "7001";
+        //        }
+        //    }
+        //    //判断AFF_DESTINATION
+        //    if (LE.Length > 2)
+        //    {
+        //        if (LE.Substring(0, 2).Equals("76"))
+        //        {
+        //            outputRow.AFF_DESTINATION = "76";
+        //        }
+        //        else if (LE.Substring(0, 2).Equals("70"))
+        //        {
+        //            outputRow.AFF_DESTINATION = "70";
+        //        }
+        //    }
+        //    decimal dMoney = 0;
+        //    if (LE.Equals("760110"))
+        //    {
+        //        dMoney = Math.Round(iIns * dMor, 2);
+        //    }
+        //    else if (LE.Equals("700110"))
+        //    {
+        //        dMoney = iIns;
+        //    }
+        //    outputRow.ENTERED_DR = "";
+        //    outputRow.ENTERED_CR = dMoney.ToString();
+        //    outputRow.ACCOUNTED_DR = "";
+        //    outputRow.ACCOUNTED_CR = "";
+        //    //判断SET_OF_BOOKS_ID
+        //    if (LE.Length > 2)
+        //    {
+        //        if (LE.Substring(0, 2).Equals("76"))
+        //        {
+        //            outputRow.SET_OF_BOOKS_ID = "050";
+        //        }
+        //        else if (LE.Substring(0, 2).Equals("70"))
+        //        {
+        //            outputRow.SET_OF_BOOKS_ID = "051";
+        //        }
+        //    }
+        //    outputRow.ACTUAL_FLAG = "A";
+        //    outputRow.AFF_JOURNAL_CATEGORY = "Adjustment";
+        //    outputRow.AFF_JOURNAL_SOURCE = "Spreadsheet";
+        //    outputRow.PERIOD = "";
+        //    outputRow.CODE_COMBINATION_ID = "";
+        //    outputRow.COMPANY_CODE_MAP = "";
+        //    outputRow.JOURNAL_SOURCE_MAP = "";
+        //    outputRow.JOURNAL_CATEGORY_MAP = "";
+        //    outputRow.JOURNAL_BATCH = txtJOURNAL_BATCH.Text;
+        //    outputRow.BATCH_DESCRIPTION = txtBATCH_DESCRIPTION.Text;
+        //    outputRow.JOURNAL_NAME = txtJOURNAL_BATCH.Text;
+        //    outputRow.JOURNAL_DESCRIPTION = txtBATCH_DESCRIPTION.Text;
+        //    outputRow.JOURNAL_REFERENCE = "";
+        //    outputRow.JOURNALLINEDESC = txtDESC_VCP.Text;
+        //    outputRow.LEGACY_ACCOUNT = "";
+        //    outputRow.LEGACY_JRNL_NUM = "";
+        //    outputRow.LEGACY_OFFSET_ACCT = "";
+        //    outputRow.BILL_TO_CUSTOMER = "";
+        //    outputRow.SHIP_TO_CUSTOMER = "";
+        //    outputRow.EMPLOYEE_NUM = "";
+        //    outputRow.INVENTORY_ORG = "";
+        //    outputRow.MA_CODE = "";
+        //    outputRow.MATERIAL_CLASS = "";
+        //    outputRow.PO_ITEM = "";
+        //    outputRow.ORDER_NUM = uGridInput.Rows[i].Cells["OrderNumber"].Value.ToString();
+        //    outputRow.INV_ITEM_NUM = "";
+        //    outputRow.QUANTITY = "";
+        //    outputRow.UNIT_OF_MEASURE = "";
+        //    outputRow.DOCUMENT_NUM = "";
+        //    outputRow.DOCUMENT_DATE = "";
+        //    outputRow.PROJECT_NUM = "";
+        //    outputRow.DOCUMENT_NUM2 = "";
+        //    outputRow.SHIPPED_DATE = "";
+        //    outputRow.VAT_CODE = "";
+        //    outputRow.ACTUAL_HOURS = "";
+        //    outputRow.CONSIGNMT_CONTRACT = "";
+        //    outputRow.COST_KEY = "";
+        //    outputRow.PO_NUM = "";
+        //    outputRow.PSI_CODE = "";
+        //    outputRow.RETURN_MAT_CODE = "";
+        //    outputRow.TRANSACTION_CODE = "";
+        //    outputRow.VENDOR_NUM = "";
+        //    outputRow.SERVICE_ACCTG_KEY = "";
+        //    outputRow.REFERENCE_AMOUNT = "";
+        //    outputRow.LOCAL_MAPPING_FIELD1 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD2 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD3 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD4 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD5 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD6 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD7 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD8 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD9 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD10 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD11 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD12 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD13 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD14 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD15 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD16 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD17 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD18 = "";
+        //    outputRow.LOCAL_MAPPING_FIELD19 = "";
+        //    dsMain.DataOutPut.Rows.Add(outputRow);
+        //}
+        /// <summary>
+        /// 写VCPGroupby后的贷方数据
+        /// </summary>
+        /// <param name="LE"></param>
+        /// <param name="ModCode"></param>
+        /// <param name="iIns"></param>
+        /// <param name="CrAccount"></param>
+        /// <param name="CrMktSegment"></param>
+        /// <param name="CrFolder"></param>
+        /// <param name="CrBV"></param>
         private void WriteVCPCrGoupBy(string LE, string ModCode, decimal iIns, string CrAccount, string CrMktSegment, string CrFolder, string CrBV)
         {
 
-            var citem = "VCP";
-            var PL ="L23";
-            
-            var CrCC = "";
-            var CrModCode = "";
-            var results = from rs in dsMain.SDMatrix
-                          where rs.Item == "VCP" && rs.PL == PL && rs.LE == LE && rs.ModCode == ModCode
-                          select rs; ;
+            //var citem = "VCP";
+            //var PL ="L23";
 
-            foreach (var atemp in results)
-            {
-                CrAccount = atemp.CrAccount;
-                CrCC = atemp.CrCC;
-                CrFolder = atemp.CrFolder;
-                CrModCode = atemp.CrModCode;
-                break;
-            }
+            //var CrCC = "";
+            //var CrModCode = "";
+            //var results = from rs in dsMain.SDMatrix
+            //              where rs.Item == "VCP" && rs.PL == PL && rs.LE == LE && rs.ModCode == ModCode
+            //              select rs; ;
+
+            //foreach (var atemp in results)
+            //{
+            //    CrAccount = atemp.CrAccount;
+            //    CrCC = atemp.CrCC;
+            //    CrFolder = atemp.CrFolder;
+            //    CrModCode = atemp.CrModCode;
+            //    break;
+            //}
             var outputRow = dsMain.DataOutPut.NewDataOutPutRow();
             outputRow.ACCOUNTING_DATE = txtACCOUNTING_DATE.Text;
             //判断币种
@@ -3043,10 +3130,21 @@ namespace FDCS
             outputRow.AFF_COMPANY = LE;
             outputRow.AFF_ACCOUNT = CrAccount;
             //成本中心
-            outputRow.AFF_CENTER = CrCC;
+            if (LE.Length > 2)
+            {
+                if (LE.Substring(0, 2).Equals("76"))
+                {
+                    outputRow.AFF_CENTER = "761625";
+                }
+                else if (LE.Substring(0, 2).Equals("70"))
+                {
+                    outputRow.AFF_CENTER = "701625";
+                }
+            }
 
             outputRow.AFF_BASE_VAR = CrBV;
-            outputRow.AFF_MODALITY = CrModCode;
+            //VCP的Cr. MOD code should all be 990
+            outputRow.AFF_MODALITY = ModCode;
             outputRow.AFF_MKT_SEGMENT = CrMktSegment;
             outputRow.AFF_FOLDER = CrFolder;
 
@@ -3075,17 +3173,18 @@ namespace FDCS
                 }
             }
             //判断AFF_DESTINATION
-            if (LE.Length > 2)
-            {
-                if (LE.Substring(0, 2).Equals("76"))
-                {
-                    outputRow.AFF_DESTINATION = "76";
-                }
-                else if (LE.Substring(0, 2).Equals("70"))
-                {
-                    outputRow.AFF_DESTINATION = "70";
-                }
-            }
+            outputRow.AFF_DESTINATION = "00";
+            //if (LE.Length > 2)
+            //{
+            //    if (LE.Substring(0, 2).Equals("76"))
+            //    {
+            //        outputRow.AFF_DESTINATION = "76";
+            //    }
+            //    else if (LE.Substring(0, 2).Equals("70"))
+            //    {
+            //        outputRow.AFF_DESTINATION = "70";
+            //    }
+            //}
             decimal dMoney = 0;
             if (LE.Equals("760110"))
             {
@@ -3177,7 +3276,11 @@ namespace FDCS
             dsMain.DataOutPut.Rows.Add(outputRow);
         }
 
-
+        /// <summary>
+        /// 导出Excel表格数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbtnExportExcel_Click(object sender, EventArgs e)
         {
             sfdMain.Filter = @"Excel2003文件(*.xls)|*.xls";
@@ -3198,135 +3301,135 @@ namespace FDCS
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
-        private void tsbtnExportCsv_Click(object sender, EventArgs e)
+        //private void tsbtnExportCsv_Click(object sender, EventArgs e)
+        //{
+        //    ExportDataGridToCSV(dsMain.DataOutPut);
+        //}
+
+        ///// <summary>
+        ///// Export the data from datatable to CSV file
+        ///// </summary>
+        ///// <param name="grid"></param>
+        //public void ExportDataGridToCSV(DataTable dt)
+        //{
+        //    //File info initialization
+        //    sfdMain.Filter = @"CSV文件(*.csv)|*.csv";
+        //    sfdMain.DefaultExt = "csv";
+        //    sfdMain.Title = @"文件保存到";
+        //    sfdMain.FileName = DateTime.Today.ToString("yyyyMMdd");
+        //    if (sfdMain.ShowDialog() != DialogResult.OK) return;
+
+        //    System.IO.FileStream fs = new FileStream(sfdMain.FileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+        //    StreamWriter sw = new StreamWriter(fs, new System.Text.UnicodeEncoding());
+        //    //Tabel header
+        //    for (int i = 0; i < dt.Columns.Count; i++)
+        //    {
+        //        sw.Write(dt.Columns[i].ColumnName);
+        //        sw.Write("\t");
+        //    }
+        //    sw.WriteLine("");
+        //    //Table body
+        //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    {
+        //        for (int j = 0; j < dt.Columns.Count; j++)
+        //        {
+        //            sw.Write(dt.Rows[i][j].ToString());
+        //            sw.Write("\t");
+        //        }
+        //        sw.WriteLine("");
+        //    }
+        //    sw.Flush();
+        //    sw.Close();
+        //    MessageBox.Show("Save CSV:" + sfdMain.FileName);
+        //}
+
+        private void uGridExport2007_BeginExport(object sender, Infragistics.Win.UltraWinGrid.ExcelExport.BeginExportEventArgs e)
         {
-            ExportDataGridToCSV(dsMain.DataOutPut);
+            pbMain.Value = 0;
+            pbMain.Maximum = uGridOutput.Rows.Count;
+
         }
 
-        /// <summary>
-     /// Export the data from datatable to CSV file
-     /// </summary>
-     /// <param name="grid"></param>
-     public void ExportDataGridToCSV(DataTable dt)
-     {
-         //File info initialization
-         sfdMain.Filter = @"CSV文件(*.csv)|*.csv";
-         sfdMain.DefaultExt = "csv";
-         sfdMain.Title = @"文件保存到";
-         sfdMain.FileName = DateTime.Today.ToString("yyyyMMdd");
-         if (sfdMain.ShowDialog() != DialogResult.OK) return;
+        private void uGridExport2007_RowExported(object sender, Infragistics.Win.UltraWinGrid.ExcelExport.RowExportedEventArgs e)
+        {
+            pbMain.Value = e.CurrentRowIndex;
+        }
 
-         System.IO.FileStream fs = new FileStream(sfdMain.FileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-         StreamWriter sw = new StreamWriter(fs, new System.Text.UnicodeEncoding());
-         //Tabel header
-         for (int i = 0; i < dt.Columns.Count; i++)
-         {
-             sw.Write(dt.Columns[i].ColumnName);
-             sw.Write("\t");
-         }
-         sw.WriteLine("");
-         //Table body
-         for (int i = 0; i < dt.Rows.Count; i++)
-         {
-             for (int j = 0; j < dt.Columns.Count; j++)
-             {
-                 sw.Write(dt.Rows[i][j].ToString());
-                 sw.Write("\t");
-             }
-             sw.WriteLine("");
-         }
-         sw.Flush();
-         sw.Close();
-         MessageBox.Show("Save CSV:" + sfdMain.FileName);
-     }
-
-     private void uGridExport2007_BeginExport(object sender, Infragistics.Win.UltraWinGrid.ExcelExport.BeginExportEventArgs e)
-     {
-         pbMain.Value = 0;
-         pbMain.Maximum = uGridOutput.Rows.Count;
-
-     }
-
-     private void uGridExport2007_RowExported(object sender, Infragistics.Win.UltraWinGrid.ExcelExport.RowExportedEventArgs e)
-     {
-         pbMain.Value = e.CurrentRowIndex;
-     }
-
-     /// <summary> 
-     /// 导出数据到本地 
-     /// </summary> 
-     /// <param name="dt">要导出的数据</param> 
-     /// <param name="tableName">表格标题</param> 
-     /// <param name="path">保存路径</param> 
-     public static void OutFileToDisk(DataTable dt, string tableName, string path)
-     {
+        /// <summary> 
+        /// 导出数据到本地 Excel
+        /// </summary> 
+        /// <param name="dt">要导出的数据</param> 
+        /// <param name="tableName">表格标题</param> 
+        /// <param name="path">保存路径</param> 
+        public static void OutFileToDisk(DataTable dt, string tableName, string path)
+        {
 
 
-         Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(); //工作簿 
-         Aspose.Cells.Worksheet sheet = workbook.Worksheets[0]; //工作表 
-         Cells cells = sheet.Cells;//单元格 
+            Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(); //工作簿 
+            Aspose.Cells.Worksheet sheet = workbook.Worksheets[0]; //工作表 
+            Cells cells = sheet.Cells;//单元格 
 
-         //为标题设置样式     
-         //Style styleTitle = workbook.Styles[workbook.Styles.Add()];//新增样式 
-         //styleTitle.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
-         //styleTitle.Font.Name = "宋体";//文字字体 
-         //styleTitle.Font.Size = 18;//文字大小 
-         //styleTitle.Font.IsBold = true;//粗体 
+            //为标题设置样式     
+            //Style styleTitle = workbook.Styles[workbook.Styles.Add()];//新增样式 
+            //styleTitle.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
+            //styleTitle.Font.Name = "宋体";//文字字体 
+            //styleTitle.Font.Size = 18;//文字大小 
+            //styleTitle.Font.IsBold = true;//粗体 
 
-         ////样式2 
-         //Style style2 = workbook.Styles[workbook.Styles.Add()];//新增样式 
-         //style2.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
-         //style2.Font.Name = "宋体";//文字字体 
-         //style2.Font.Size = 14;//文字大小 
-         //style2.Font.IsBold = true;//粗体 
-         //style2.IsTextWrapped = true;//单元格内容自动换行 
-         //style2.Borders[BorderType.LeftBorder].LineStyle = CellBorderType.Thin;
-         //style2.Borders[BorderType.RightBorder].LineStyle = CellBorderType.Thin;
-         //style2.Borders[BorderType.TopBorder].LineStyle = CellBorderType.Thin;
-         //style2.Borders[BorderType.BottomBorder].LineStyle = CellBorderType.Thin;
+            ////样式2 
+            //Style style2 = workbook.Styles[workbook.Styles.Add()];//新增样式 
+            //style2.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
+            //style2.Font.Name = "宋体";//文字字体 
+            //style2.Font.Size = 14;//文字大小 
+            //style2.Font.IsBold = true;//粗体 
+            //style2.IsTextWrapped = true;//单元格内容自动换行 
+            //style2.Borders[BorderType.LeftBorder].LineStyle = CellBorderType.Thin;
+            //style2.Borders[BorderType.RightBorder].LineStyle = CellBorderType.Thin;
+            //style2.Borders[BorderType.TopBorder].LineStyle = CellBorderType.Thin;
+            //style2.Borders[BorderType.BottomBorder].LineStyle = CellBorderType.Thin;
 
-         ////样式3 
-         //Style style3 = workbook.Styles[workbook.Styles.Add()];//新增样式 
-         //style3.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
-         //style3.Font.Name = "宋体";//文字字体 
-         //style3.Font.Size = 12;//文字大小 
-         //style3.Borders[BorderType.LeftBorder].LineStyle = CellBorderType.Thin;
-         //style3.Borders[BorderType.RightBorder].LineStyle = CellBorderType.Thin;
-         //style3.Borders[BorderType.TopBorder].LineStyle = CellBorderType.Thin;
-         //style3.Borders[BorderType.BottomBorder].LineStyle = CellBorderType.Thin;
+            ////样式3 
+            //Style style3 = workbook.Styles[workbook.Styles.Add()];//新增样式 
+            //style3.HorizontalAlignment = TextAlignmentType.Center;//文字居中 
+            //style3.Font.Name = "宋体";//文字字体 
+            //style3.Font.Size = 12;//文字大小 
+            //style3.Borders[BorderType.LeftBorder].LineStyle = CellBorderType.Thin;
+            //style3.Borders[BorderType.RightBorder].LineStyle = CellBorderType.Thin;
+            //style3.Borders[BorderType.TopBorder].LineStyle = CellBorderType.Thin;
+            //style3.Borders[BorderType.BottomBorder].LineStyle = CellBorderType.Thin;
 
-         int Colnum = dt.Columns.Count;//表格列数 
-         int Rownum = dt.Rows.Count;//表格行数 
+            int Colnum = dt.Columns.Count;//表格列数 
+            int Rownum = dt.Rows.Count;//表格行数 
 
 
-         //生成行2 列名行 
-         for (int i = 0; i < Colnum; i++)
-         {
-             cells[0, i].PutValue(dt.Columns[i].ColumnName);
-             cells.SetColumnWidth(i,25);
-             //cells[0, i].SetStyle(style2);
-         }
+            //生成行2 列名行 
+            for (int i = 0; i < Colnum; i++)
+            {
+                cells[0, i].PutValue(dt.Columns[i].ColumnName);
+                cells.SetColumnWidth(i, 25);
+                //cells[0, i].SetStyle(style2);
+            }
 
-         //生成数据行 
-         for (int i = 0; i < Rownum; i++)
-         {
-             for (int k = 0; k < Colnum; k++)
-             {
-                 //if(cells[1 + i].Name.Equals("ENTERED_DR")||cells[1 + i].Name.Equals("ENTERED_CR"))
-                 //{
-                 //    if (string.IsNullOrEmpty(dt.Rows[i][k])
-                 //    cells[1 + i, k].PutValue(dt.Rows[i][k]);
-                 //}
-                 cells[1 + i, k].PutValue(dt.Rows[i][k]);
-                 //cells[1 + i, k].SetStyle(style3);
-             }
-         }
+            //生成数据行 
+            for (int i = 0; i < Rownum; i++)
+            {
+                for (int k = 0; k < Colnum; k++)
+                {
+                    //if(cells[1 + i].Name.Equals("ENTERED_DR")||cells[1 + i].Name.Equals("ENTERED_CR"))
+                    //{
+                    //    if (string.IsNullOrEmpty(dt.Rows[i][k])
+                    //    cells[1 + i, k].PutValue(dt.Rows[i][k]);
+                    //}
+                    cells[1 + i, k].PutValue(dt.Rows[i][k]);
+                    //cells[1 + i, k].SetStyle(style3);
+                }
+            }
 
-         workbook.Save(path);
-     } 
+            workbook.Save(path);
+        }
 
     }
 }

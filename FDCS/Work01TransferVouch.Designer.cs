@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Work01TransferVouch));
-            Infragistics.Win.Appearance appearance44 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
             Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinGrid.UltraGridBand ultraGridBand1 = new Infragistics.Win.UltraWinGrid.UltraGridBand("DataInput", -1);
             Infragistics.Win.UltraWinGrid.UltraGridColumn ultraGridColumn253 = new Infragistics.Win.UltraWinGrid.UltraGridColumn("RowNo");
@@ -213,6 +213,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tslblProgress = new System.Windows.Forms.ToolStripLabel();
             this.tsbtnExportExcel = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ugbxMain = new Infragistics.Win.Misc.UltraGroupBox();
             this.txtDESC_VCP = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -259,8 +260,6 @@
             this.ofdMain = new System.Windows.Forms.OpenFileDialog();
             this.uGridExport2007 = new Infragistics.Win.UltraWinGrid.ExcelExport.UltraGridExcelExporter(this.components);
             this.sfdMain = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbtnExportCsv = new System.Windows.Forms.ToolStripButton();
             this.tsMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ugbxMain)).BeginInit();
             this.ugbxMain.SuspendLayout();
@@ -298,8 +297,7 @@
             this.toolStripSeparator2,
             this.tslblProgress,
             this.tsbtnExportExcel,
-            this.toolStripSeparator3,
-            this.tsbtnExportCsv});
+            this.toolStripSeparator3});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(984, 27);
@@ -369,10 +367,15 @@
             this.tsbtnExportExcel.ToolTipText = "❹Export Excel ";
             this.tsbtnExportExcel.Click += new System.EventHandler(this.tsbtnExportExcel_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            // 
             // ugbxMain
             // 
-            appearance44.BackColor = System.Drawing.Color.White;
-            this.ugbxMain.Appearance = appearance44;
+            appearance1.BackColor = System.Drawing.Color.White;
+            this.ugbxMain.Appearance = appearance1;
             this.ugbxMain.Controls.Add(this.txtDESC_VCP);
             this.ugbxMain.Controls.Add(this.label10);
             this.ugbxMain.Controls.Add(this.txtDESC_APPII);
@@ -504,6 +507,11 @@
             this.uneMor.NumericType = Infragistics.Win.UltraWinEditors.NumericType.Decimal;
             this.uneMor.Size = new System.Drawing.Size(100, 21);
             this.uneMor.TabIndex = 10;
+            this.uneMor.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label5
             // 
@@ -1327,22 +1335,6 @@
             this.uGridExport2007.BeginExport += new Infragistics.Win.UltraWinGrid.ExcelExport.BeginExportEventHandler(this.uGridExport2007_BeginExport);
             this.uGridExport2007.RowExported += new Infragistics.Win.UltraWinGrid.ExcelExport.RowExportedEventHandler(this.uGridExport2007_RowExported);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
-            // 
-            // tsbtnExportCsv
-            // 
-            this.tsbtnExportCsv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbtnExportCsv.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnExportCsv.Image")));
-            this.tsbtnExportCsv.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtnExportCsv.Name = "tsbtnExportCsv";
-            this.tsbtnExportCsv.Size = new System.Drawing.Size(84, 24);
-            this.tsbtnExportCsv.Text = "❹Export CSV";
-            this.tsbtnExportCsv.ToolTipText = "❹Export Excel ";
-            this.tsbtnExportCsv.Click += new System.EventHandler(this.tsbtnExportCsv_Click);
-            // 
             // Work01TransferVouch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1440,6 +1432,5 @@
         private System.Windows.Forms.TextBox txtDESC_VCP;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton tsbtnExportCsv;
     }
 }

@@ -151,6 +151,12 @@
     <Compile Include="Work01TransferVouch.Designer.cs">
       <DependentUpon>Work01TransferVouch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Work02TransferCCB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Work02TransferCCB.Designer.cs">
+      <DependentUpon>Work02TransferCCB.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FMain.resx">
       <DependentUpon>FMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -170,6 +176,9 @@
     </Compile>
     <EmbeddedResource Include="Work01TransferVouch.resx">
       <DependentUpon>Work01TransferVouch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Work02TransferCCB.resx">
+      <DependentUpon>Work02TransferCCB.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="DsMain.xsc">
